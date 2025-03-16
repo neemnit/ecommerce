@@ -17,6 +17,11 @@ const LoginSuccessWrapper: React.FC = () => {
 const LoginSuccess: React.FC = () => {
   const searchParams = useSearchParams();
   const sessionId = searchParams?.get("sessionId");
+
+  return <LoginSuccessContent sessionId={sessionId} />;
+};
+
+const LoginSuccessContent: React.FC<{ sessionId: string | null }> = ({ sessionId }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -55,17 +60,11 @@ const LoginSuccess: React.FC = () => {
   }, [sessionId, dispatch, router]);
 
   useEffect(() => {
-    const redirectToPage = async () => {
-      if (isDataLoaded && isAuthenticated && user?._id) {
-        const userAddress = addresses.find((addr) => addr.userId === user._id);
-        router.replace(userAddress ? "/order" : "/address");
-
-        // Prevent infinite redirects
-        setIsDataLoaded(false);
-      }
-    };
-
-    redirectToPage();
+    if (isDataLoaded && isAuthenticated && user?._id) {
+      const userAddress = addresses.find((addr) => addr.userId === user._id);
+      router.replace(userAddress ? "/order" : "/address");
+      setIsDataLoaded(false);
+    }
   }, [isDataLoaded, isAuthenticated, user?._id, addresses, router]);
 
   return (
