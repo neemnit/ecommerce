@@ -15,7 +15,7 @@ export default function LayoutWrapper({ children }: { children: ReactNode }) {
   const isHome = pathname === "/";
 
   // List of private routes
-  const privateRoutes = ["/address", "/login-success", "/my-orders", "/order", "/payment", "/success"]; // Add your private routes
+  const privateRoutes = ["/address", "/my-orders", "/order", "/payment", "/success"]; // Add your private routes
 
   useEffect(() => {
     if (!isAuthenticated && privateRoutes.includes(pathname)) {
