@@ -17,7 +17,7 @@ const SuccessPage = () => {
   const { payment, loading, error, message } = useAppSelector(
     (state) => state.payment
   );
-const id =useAppSelector((state) => state.user.user?._id)
+const id =useAppSelector((state) => state.user.user?._id )
 
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const id =useAppSelector((state) => state.user.user?._id)
       if (session_id && paymentId) {
         dispatch(verifyPayment({ session_id, paymentId }));
         if (id) {
-          
+alert(id)          
            await dispatch(getUserOrder(id));
           
         }
