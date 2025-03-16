@@ -11,7 +11,7 @@ const ShowLoginModal: React.FC<ShowLoginModalProps> = ({ handleCloseModal }) => 
   const router = useRouter();
 
   const handleLogin = () => {
-    router.push("http://localhost:4545/auth/google");
+    router.push("https://ecommerce-myr6.onrender.com/auth/google");
   };
 
   return (

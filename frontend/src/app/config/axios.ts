@@ -1,7 +1,7 @@
 import Axios, { AxiosInstance } from "axios";
 
 const axiosInstance:AxiosInstance = Axios.create({
-  baseURL: "http://localhost:4545",
+  baseURL: "https://ecommerce-myr6.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },

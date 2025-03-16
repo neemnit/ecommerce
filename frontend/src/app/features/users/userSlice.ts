@@ -28,7 +28,7 @@ export const fetchUserSession = createAsyncThunk(
   "user/fetchSession",
   async (sessionId: string, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`http://localhost:4545/auth/session/${sessionId}`, {
+      const { data } = await axios.get(`https://ecommerce-myr6.onrender.com/auth/session/${sessionId}`, {
         withCredentials: true,
       });
 
@@ -58,7 +58,7 @@ export const fetchUserById = createAsyncThunk(
         return rejectWithValue("No access token available");
       }
 
-      const { data } = await axios.get(`http://localhost:4545/users/${userId}`, {
+      const { data } = await axios.get(`https://ecommerce-myr6.onrender.com/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -80,7 +80,7 @@ export const logoutUser = createAsyncThunk(
   "user/logout",
   async (_, { rejectWithValue }) => {
     try {
-      await axios.get("http://localhost:4545/auth/logout", { withCredentials: true });
+      await axios.get("https://ecommerce-myr6.onrender.com/auth/logout", { withCredentials: true });
       localStorage.removeItem("accessToken"); // Clear token from storage
       return true; // Indicate success
     } catch (error: unknown) {

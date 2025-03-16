@@ -347,7 +347,7 @@ export default function Navbar() {
 
                   {/* Menu Items */}
                   <Link
-                    href={user ? "" : "http://localhost:4545/auth/google"}
+                    href={user ? "" : "https://ecommerce-myr6.onrender.com/auth/google"}
                     className="block px-4 py-3 text-gray-700 hover:bg-gray-100 transition"
                     onClick={() => setShowLoginModal(!showLoginModal)}
                   >
@@ -435,7 +435,7 @@ export default function Navbar() {
         <div className="p-6 space-y-4">
           <div className="space-y-4">
             <Link
-              href={user ? "" : "http://localhost:4545/auth/google"}
+              href={user ? "" : "https://ecommerce-myr6.onrender.com/auth/google"}
               className="block first:bg-sky-500 first:text-white first:rounded-md first:px-4 first:py-2 bg-white py-2 px-4 text-lg font-semibold"
               onClick={() => setShowLoginModal(!showLoginModal)}
             >

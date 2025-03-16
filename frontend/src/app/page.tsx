@@ -40,7 +40,7 @@ export default function Home() {
 
         if (decoded.exp * 1000 < Date.now()) {
           // Refresh token
-          const res = await axios.post("http://localhost:4545/refresh-token", {}, { withCredentials: true });
+          const res = await axios.post("https://ecommerce-myr6.onrender.com/refresh-token", {}, { withCredentials: true });
           localStorage.setItem("accessToken", res.data.accessToken);
           token = res.data.accessToken;
         }

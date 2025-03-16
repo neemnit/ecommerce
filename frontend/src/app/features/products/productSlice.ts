@@ -59,7 +59,7 @@ export const fetchProducts = createAsyncThunk<
   { rejectValue: string }
 >("product/fetchProducts", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get("http://localhost:4545/getproduct");
+    const response = await axios.get("https://ecommerce-myr6.onrender.com/getproduct");
     return response.data.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
