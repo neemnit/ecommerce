@@ -77,7 +77,7 @@ const orderController = {
         success: true,
         message: "Order created successfully",
         orderId: savedOrder._id,
-        redirectUrl: `http://localhost:3000/payment/${savedOrder._id}`,
+        redirectUrl: `https://ecommerce-a2i2.vercel.app/payment/${savedOrder._id}`,
       });
       
 
