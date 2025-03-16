@@ -15,7 +15,7 @@ const app = express();
 // ✅ CORS setup (must include credentials)
 app.use(
   cors({
-    origin: "http://localhost:3000", // Allow frontend requests
+    origin: "https://ecommerce-a2i2.vercel.app", // Allow frontend requests
     credentials: true, // Required if using cookies or authentication headers
      // Ensure correct methods are allowed
      // Include necessary headers
