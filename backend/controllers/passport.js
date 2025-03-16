@@ -30,7 +30,7 @@ const passportController = {
       const sessionId = generateSessionId();
       sessions.set(sessionId, accessToken);
 
-      res.redirect(`http://localhost:3000/login-success?sessionId=${sessionId}`);
+      res.redirect(`https://ecommerce-a2i2.vercel.app/login-success?sessionId=${sessionId}`);
       next();
     } catch (error) {
       next(error);
