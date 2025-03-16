@@ -4,6 +4,7 @@ import "./globals.css";
 import { ReduxProvider } from "./ReduxProvider";
 import NavbarWrapper from "./components/NavbarWrapper";
 import LayoutWrapper from "./components/LayoutWrapper"; // Import the new wrapper
+import { Suspense } from "react"; // Import Suspense
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Ecommerce app",
-  description: "It is an online ecoomerce app",
+  description: "It is an online ecommerce app",
 };
 
 export default function RootLayout({
@@ -25,7 +26,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <html lang="en">
       <head>
@@ -36,7 +36,10 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <NavbarWrapper />
-          <LayoutWrapper>{children}</LayoutWrapper> {/* Apply conditional margin */}
+          {/* Wrap children in Suspense globally */}
+          <Suspense fallback={<div>Loading...</div>}>
+            <LayoutWrapper>{children}</LayoutWrapper>
+          </Suspense>
         </ReduxProvider>
       </body>
     </html>
