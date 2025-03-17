@@ -208,7 +208,7 @@ const Page = () => {
               ✕
             </button>
 
-            <h2 className="text-lg font-semibold mb-3">Select Size</h2>
+            <h2 className="text-lg font-semibold mb-3 text-gray-900">Select Size</h2>
 
             <div className="flex items-center gap-4">
               {/* Product Image */}

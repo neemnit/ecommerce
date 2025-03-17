@@ -15,7 +15,7 @@ const ShowLoginModal: React.FC<ShowLoginModalProps> = ({ handleCloseModal }) => 
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end sm:items-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-end sm:items-center">
       <div className="bg-white w-full sm:w-96 p-6 rounded-t-lg sm:rounded-lg shadow-lg text-center">
         <h2 className="text-xl font-semibold mb-4 text-gray-800">Login to Continue</h2>
         <button

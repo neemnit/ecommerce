@@ -49,6 +49,7 @@ const AddDeliveryAddress: React.FC = () => {
     try {
       let resultAction;
       if (isEditing) {
+        
         resultAction = await dispatch(editAddress({ id: editAddressId!, updatedData: address }));
       } else {
         resultAction = await dispatch(addAddress(address));
@@ -70,10 +71,10 @@ const AddDeliveryAddress: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Back Button and Header */}
       <div className="flex items-center p-4 bg-white shadow">
-        <button onClick={() => router.back()} className="text-lg font-medium">
+        <button onClick={() => router.back()} className="text-lg font-medium text-gray-800">
           ← Back
         </button>
-        <h2 className="text-lg font-semibold mx-auto">
+        <h2 className="text-lg font-semibold mx-auto text-gray-800">
           {isEditing ? "Edit Delivery Address" : "Add Delivery Address"}
         </h2>
       </div>
@@ -81,86 +82,86 @@ const AddDeliveryAddress: React.FC = () => {
       {/* Address Form */}
       <div className="flex-1 p-6">
         <div className="max-w-lg mx-auto bg-white p-6 shadow rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">
             {isEditing ? "Edit Address Details" : "Enter Address Details"}
           </h2>
           {error && <p className="text-red-500 mb-2">{error}</p>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium">Full Name</label>
+              <label className="block text-sm font-medium text-gray-800">Full Name</label>
               <input
                 type="text"
                 name="fullName"
                 value={address.fullName}
-                className="w-full p-2 border rounded mt-1"
+                className="w-full p-2 border rounded mt-1 text-gray-800"
                 onChange={handleChange}
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">Phone Number</label>
+              <label className="block text-sm font-medium text-gray-800">Phone Number</label>
               <input
                 type="text"
                 name="phone"
                 value={address.phone}
-                className="w-full p-2 border rounded mt-1"
+                className="w-full p-2 border rounded mt-1 text-gray-800"
                 onChange={handleChange}
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">Pincode</label>
+              <label className="block text-sm font-medium text-gray-800">Pincode</label>
               <input
                 type="text"
                 name="pincode"
                 value={address.pincode}
-                className="w-full p-2 border rounded mt-1"
+                className="w-full p-2 border rounded mt-1 text-gray-800"
                 onChange={handleChange}
                 required
               />
             </div>
             <div className="flex gap-2">
               <div className="w-1/2">
-                <label className="block text-sm font-medium">State</label>
+                <label className="block text-sm font-medium text-gray-800">State</label>
                 <input
                   type="text"
                   name="state"
                   value={address.state}
-                  className="w-full p-2 border rounded mt-1"
+                  className="w-full p-2 border rounded mt-1 text-gray-800"
                   onChange={handleChange}
                   required
                 />
               </div>
               <div className="w-1/2">
-                <label className="block text-sm font-medium">City</label>
+                <label className="block text-sm font-medium text-gray-800">City</label>
                 <input
                   type="text"
                   name="city"
                   value={address.city}
-                  className="w-full p-2 border rounded mt-1"
+                  className="w-full p-2 border rounded mt-1 text-gray-800"
                   onChange={handleChange}
                   required
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium">House No., Building Name</label>
+              <label className="block text-sm font-medium text-gray-800">House No., Building Name</label>
               <input
                 type="text"
                 name="houseNo"
                 value={address.houseNo}
-                className="w-full p-2 border rounded mt-1"
+                className="w-full p-2 border rounded mt-1 text-gray-800"
                 onChange={handleChange}
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">Road Name, Area, Colony</label>
+              <label className="block text-sm font-medium text-gray-800">Road Name, Area, Colony</label>
               <input
                 type="text"
                 name="road"
                 value={address.road || ""}
-                className="w-full p-2 border rounded mt-1"
+                className="w-full p-2 border rounded mt-1 text-gray-800"
                 onChange={handleChange}
               />
             </div>
@@ -169,12 +170,12 @@ const AddDeliveryAddress: React.FC = () => {
       </div>
 
       {/* Fixed Bottom Button */}
-      <div className="p-4 bg-white shadow-md">
+      <div className="p-4 bg-white shadow-md flex justify-center">
         <button
           type="submit"
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className={`w-full p-3 rounded-lg text-lg ${
+          className={`w-full sm:w-full md:w-full lg:w-auto p-3 rounded-lg text-lg font-bold text-center ${
             isSubmitting ? "bg-gray-400" : "bg-orange-600 text-white"
           }`}
         >

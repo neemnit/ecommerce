@@ -60,6 +60,11 @@ router.get('/getAddress', authenticate, (req, res, next) => {
   req.body.userId = req.user.id;
   addressController.getAddress(req, res, next);
 });
+router.put('/api/addresses/:addressId', authenticate, (req, res, next) => {
+  req.body.userId = req.user.id;
+  addressController.editAddress(req, res, next);
+}
+);
 
 /**
  * 📦 Order Routes

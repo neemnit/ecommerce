@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosInstance from "@/app/config/axios";
 import { jwtDecode } from "jwt-decode";
+import  { isAxiosError } from "axios";
+
 
 interface User {
   id: string;
@@ -28,7 +30,7 @@ export const fetchUserSession = createAsyncThunk(
   "user/fetchSession",
   async (sessionId: string, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`https://ecommerce-myr6.onrender.com/auth/session/${sessionId}`, {
+      const { data } = await axiosInstance.get(`/auth/session/${sessionId}`, {
         withCredentials: true,
       });
 
@@ -40,7 +42,7 @@ export const fetchUserSession = createAsyncThunk(
         throw new Error("Invalid session");
       }
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
         return rejectWithValue(error.response?.data?.message || "Failed to fetch session");
       }
       return rejectWithValue("An unexpected error occurred");
@@ -58,7 +60,7 @@ export const fetchUserById = createAsyncThunk(
         return rejectWithValue("No access token available");
       }
 
-      const { data } = await axios.get(`https://ecommerce-myr6.onrender.com/users/${userId}`, {
+      const { data } = await axiosInstance.get(`/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -67,7 +69,7 @@ export const fetchUserById = createAsyncThunk(
 
       return data;
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
         return rejectWithValue(error.response?.data?.message || "Failed to fetch user");
       }
       return rejectWithValue("An unexpected error occurred");
@@ -80,11 +82,12 @@ export const logoutUser = createAsyncThunk(
   "user/logout",
   async (_, { rejectWithValue }) => {
     try {
-      await axios.get("https://ecommerce-myr6.onrender.com/auth/logout", { withCredentials: true });
+      await axiosInstance.get("/auth/logout", { withCredentials: true });
       localStorage.removeItem("accessToken"); // Clear token from storage
       return true; // Indicate success
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
+
         return rejectWithValue(error.response?.data?.message || "Logout failed");
       }
       return rejectWithValue("An unexpected error occurred");
@@ -103,6 +106,7 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Handle fetchUserSession
       .addCase(fetchUserSession.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -118,6 +122,8 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+
+      // Handle fetchUserById
       .addCase(fetchUserById.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -128,10 +134,13 @@ const userSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchUserById.rejected, (state, action) => {
+        state.user = null;
+        state.isAuthenticated = false;
         state.loading = false;
         state.error = action.payload as string;
       })
-      // ✅ Handle logout actions
+
+      // Handle logoutUser
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
@@ -139,6 +148,9 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(logoutUser.rejected, (state, action) => {
+        state.user = null;
+        state.isAuthenticated = false;
+        state.loading = false;
         state.error = action.payload as string;
       });
   },

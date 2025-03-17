@@ -1,16 +1,7 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import axiosInstance from "@/app/config/axios";
 
-// export type Product = {
-//   _id: string;
-//   name: string;
-// } & Partial<{
-//   images: string[];
-//   description: string;
-//   price: number;
-//   title: string;
-//   quantity?: number;
-// }>;
 export type Variant = {
   size: string;
   color: string;
@@ -59,7 +50,7 @@ export const fetchProducts = createAsyncThunk<
   { rejectValue: string }
 >("product/fetchProducts", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get("https://ecommerce-myr6.onrender.com/getproduct");
+    const response = await axiosInstance.get("/getproduct");
     return response.data.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {

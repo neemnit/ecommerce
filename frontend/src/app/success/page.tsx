@@ -51,7 +51,7 @@ alert(id)
 
         {payment && (
           <div className="mt-6 text-left">
-            <h3 className="text-lg font-semibold">Order Details:</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Order Details:</h3>
             <p className="text-gray-700">Order ID: {payment.orderId}</p>
             <p className="text-gray-700">Payment ID: {payment._id}</p>
             <p

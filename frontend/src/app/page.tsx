@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "./hook";
 import { fetchProducts } from "./features/products/productSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react"; // Add useState
 import { Product } from "./features/products/productSlice";
 import { useRouter } from "next/navigation";
 import { fetchUserById, setUser } from "./features/users/userSlice";
@@ -21,22 +21,26 @@ export default function Home() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { loading, products, error, searchQuery } = useAppSelector((state) => state.products);
+  const [isClient, setIsClient] = useState(false); // Track client-side readiness
+
+  useEffect(() => {
+    setIsClient(true); // Set to true after mounting on the client
+  }, []);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      // if (typeof window === "undefined") return; // Prevents SSR issues
+    if (!isClient) return; // Skip if not on the client
 
+    const checkAuth = async () => {
       let token: string | null = localStorage.getItem("accessToken");
-      
+
       if (!token) return;
 
       try {
         const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
-        
 
         if (decoded.exp * 1000 < Date.now()) {
           // Refresh token
@@ -44,11 +48,10 @@ export default function Home() {
           localStorage.setItem("accessToken", res.data.accessToken);
           token = res.data.accessToken;
         }
-           if(token){
-            
-            dispatch(fetchUserById(decoded.id));
-        dispatch(setUser(jwtDecode<DecodedToken>(token)));
-            } // Update Redux store with user data
+        if (token) {
+          dispatch(fetchUserById(decoded.id));
+          dispatch(setUser(jwtDecode<DecodedToken>(token)));
+        }
       } catch (error) {
         console.error("Token verification failed", error);
         localStorage.removeItem("accessToken");
@@ -56,12 +59,11 @@ export default function Home() {
     };
 
     checkAuth();
-  }, []);
+  }, [isClient]); // Run only on the client
 
   const filteredProducts = products.filter((product: Product) =>
     searchQuery ? product.name.toLowerCase().includes(searchQuery.toLowerCase()) : true
   );
-
 
   return (
     <div className="min-h-screen p-6 sm:p-10 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
@@ -69,9 +71,17 @@ export default function Home() {
         Featured Products
       </h1>
 
-      {loading && <p className="text-center text-lg text-blue-400">Loading...</p>}
+      {/* Loading Spinner */}
+      {loading && (
+        <div className="flex justify-center items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      )}
+
+      {/* Error Message */}
       {error && <p className="text-center text-lg text-red-400">{error}</p>}
 
+      {/* Product Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product: Product) => (
@@ -93,7 +103,7 @@ export default function Home() {
             </div>
           ))
         ) : (
-          <p className="text-center text-lg text-red-400">No products found</p>
+          !loading && <p className="text-center text-lg text-red-400">No products found</p>
         )}
       </div>
     </div>

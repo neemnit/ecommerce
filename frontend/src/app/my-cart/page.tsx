@@ -123,7 +123,7 @@ export default function CartPage() {
               <div key={item._id} className="flex items-center border p-4 rounded-lg shadow-md">
                 <Image src={item.images[0]} alt={item.name} width={80} height={80} className="rounded-md" />
                 <div className="ml-4 flex-1">
-                  <h2 className="text-lg font-semibold">{item.name}</h2>
+                  <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
                   <p className="text-gray-600">₹{(item.variant.price ?? 0).toFixed(2)}</p>
 
                   <div className="flex items-center mt-2">
@@ -133,7 +133,7 @@ export default function CartPage() {
                     >
                       −
                     </button>
-                    <span className="mx-2">{item.quantity ?? 1}</span>
+                    <span className="mx-2 text-gray-600">{item.quantity ?? 1}</span>
                     <button
                       onClick={() => updateQuantity(item._id, (item.quantity ?? 1) + 1)}
                       className="bg-gray-300 text-black px-2 rounded"
@@ -152,8 +152,8 @@ export default function CartPage() {
 
           {/* Order Summary */}
           <div className="p-4 border rounded-lg shadow-md bg-gray-100">
-            <h2 className="text-lg font-semibold mb-2">Order Summary</h2>
-            <p>Total Items: {totalQuantity}</p>
+            <h2 className="text-lg font-semibold mb-2 text-gray-800">Order Summary</h2>
+            <p className="text-gray-600">Total Items: {totalQuantity}</p>
 
             {/* Expected Delivery Date */}
             <p className="text-green-600 font-medium mt-2">
@@ -163,7 +163,7 @@ export default function CartPage() {
             {/* Animated Price Transition */}
             <div className="relative overflow-hidden h-8">
               <span
-                className={`absolute transition-transform duration-300 ${
+                className={`absolute text-gray-600 transition-transform duration-300 ${
                   totalPrice > prevPrice ? "animate-price-increase" : "animate-price-decrease"
                 }`}
               >
