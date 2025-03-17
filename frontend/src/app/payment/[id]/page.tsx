@@ -133,12 +133,12 @@ const PaymentPage = () => {
 
         {/* Payment Method Selection */}
         <select
-          className="w-full mt-4 p-2 border rounded-lg"
+          className="w-full mt-4 p-2 border rounded-lg placeholder:text-gray-600"
           value={paymentMethod}
           onChange={(e) => setPaymentMethod(e.target.value)}
         >
           <option value="">Select Payment Method</option>
-          <option value="Credit Card">Credit Card</option>
+          <option className="placeholder:text-gray-600" value="Credit Card">Credit Card</option>
           <option value="Debit Card">Debit Card</option>
          
           

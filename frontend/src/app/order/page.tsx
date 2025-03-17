@@ -158,7 +158,7 @@ export default function CartPage() {
         <p className="text-red-500">{error}</p>
       ) : (
         <div className="p-4 border flex justify-between items-center rounded-lg shadow-md bg-gray-100 mb-4">
-          <h2 className="text-lg font-semibold">Delivery to:</h2>
+          <h2 className="text-lg font-semibold text-gray-800">Delivery to:</h2>
           {selectedAddress && (
             <p className="text-gray-700">
               {selectedAddress.fullName}, {selectedAddress.city}, {selectedAddress.state}{" "}
@@ -227,12 +227,12 @@ export default function CartPage() {
 
           {/* Order Summary */}
           <div className="p-4 border rounded-lg shadow-md bg-gray-100">
-            <h2 className="text-lg font-semibold mb-2">Order Summary</h2>
-            <p>Total Items: {cartItems.reduce((sum, item) => sum + item.quantity, 0)}</p>
+            <h2 className="text-lg font-semibold mb-2 text-gray-800">Order Summary</h2>
+            <p className="text-gray-600">Total Items: {cartItems.reduce((sum, item) => sum + item.quantity, 0)}</p>
             <p className="text-green-600 font-medium mt-2">
               📦 Expected Delivery: <span className="font-bold">{getExpectedDeliveryDate()}</span>
             </p>
-            <p className="text-lg font-bold">
+            <p className="text-lg font-bold text-gray-500">
               Total: ₹
               {cartItems
                 .reduce((sum, item) => sum + item.variant.price * item.quantity, 0)
