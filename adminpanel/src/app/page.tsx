@@ -25,7 +25,7 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6 text-lg">
-          <li><Link href="/add-product" className="hover:text-gray-400">Add Product</Link></li>
+          <li><Link href="/productform" className="hover:text-gray-400">Add Product</Link></li>
           <li><Link href="/add-delivery-boy" className="hover:text-gray-400">Add Delivery Boy</Link></li>
           <li><Link href="/contact" className="hover:text-gray-400">Contact</Link></li>
           <li><button className="hover:text-gray-400">Logout</button></li>
