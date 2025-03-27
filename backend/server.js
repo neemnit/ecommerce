@@ -13,7 +13,7 @@ const app = express();
 // ✅ Middleware Setup
 app.use(
   cors({
-    origin: ["https://ecommerce-a2i2.vercel.app", "http://localhost:3001"],
+    origin: ["https://ecommerce-a2i2.vercel.app", "https://ecommerce-woad-eight.vercel.app/"],
     credentials: true,
   })
 );
