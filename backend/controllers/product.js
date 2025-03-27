@@ -74,7 +74,7 @@ const productController = {
       });
 
       await newProduct.save();
-      res.status(201).json({ message: "Product created successfully", product: newProduct });
+return      res.status(201).json({ message: "Product created successfully", data: newProduct });
     } catch (error) {
       console.error("❌ Error creating product:", error);
       res.status(500).json({ error: error.message });
@@ -94,6 +94,15 @@ const productController = {
       res.status(500).json({ success: false, message: "Internal Server Error" });
     }
   },
+  deleteProduct:async(req,res)=>{
+    try {
+      const id=req.params.id
+    const data=  await Product.findByIdAndDelete(id)
+    return res.json(data)
+    } catch (error) {
+      return res.json(error)
+    }
+  }
 };
 
 export default productController;

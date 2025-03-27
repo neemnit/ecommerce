@@ -28,6 +28,7 @@ export default function CartPage() {
   const user = useAppSelector((state) => state.user);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+const products=useAppSelector((state)=>state.products.products)
 
   // Load cart and address on mount
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function CartPage() {
     const tempCartItem: Product | null = JSON.parse(localStorage.getItem("tempCartItem") ?? "null");
 
     // Combine regular cart items and temporary cart item
-    const combinedCart = tempCartItem ? [tempCartItem, ...storedCart] : storedCart;
+    const combinedCart = tempCartItem ? [tempCartItem] : storedCart;
 
     setCartItems(combinedCart);
 
@@ -141,7 +142,16 @@ export default function CartPage() {
     const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" };
     return deliveryDate.toLocaleDateString("en-IN", options);
   };
+const checkStock=(id:string)=>{
+  const product=products.find((item)=>item._id===id)
+  const cartItem=cartItems.find((item)=>item._id===product?._id)
+  const quantity=product?.variants.find((item)=>{
+  return item.size===cartItem?.variant.size
+  })
+  
 
+  return quantity?.stock||0
+}
   return (
     <div className="container mx-auto p-4">
       {/* Back Button */}
@@ -209,16 +219,21 @@ export default function CartPage() {
                     <button
                       onClick={() => updateQuantity(item._id, item.quantity - 1)}
                       className="bg-gray-300 text-black px-2 rounded"
+                      disabled={item.quantity <= 1}
                     >
                       −
                     </button>
                     <span className="mx-2">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item._id, item.quantity + 1)}
-                      className="bg-gray-300 text-black px-2 rounded"
+                      className="bg-gray-300 text-black px-2 rounded "
+                      disabled={item.quantity >= checkStock(item._id)}
                     >
                       +
                     </button>
+                    {
+                    checkStock(item._id)<item.quantity&&<p className="text-red-500">Out of Stock</p>
+                    }
                   </div>
                 </div>
               </div>

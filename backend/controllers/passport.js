@@ -116,23 +116,4 @@ getSessionId: (req, res) => {
 export default passportController;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // 

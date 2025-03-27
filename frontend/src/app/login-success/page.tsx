@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { fetchUserById, fetchUserSession } from "../features/users/userSlice";
 import { useAppSelector, useAppDispatch } from "../hook";
 import { getAddress } from "../features/address/addressSlice";
+import { fetchProducts } from "../features/products/productSlice";
 
 const LoginSuccessWrapper: React.FC = () => {
   return (
@@ -43,6 +44,7 @@ const LoginSuccessContent: React.FC<{ sessionId: string | null }> = ({ sessionId
 
         // Fetch address after successful login
         await dispatch(getAddress()).unwrap();
+        await dispatch(fetchProducts()).unwrap();
 
         // Fetch user data by ID
         if (userData?.id) {

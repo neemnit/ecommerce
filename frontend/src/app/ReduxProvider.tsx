@@ -37,13 +37,13 @@ function AuthChecker() {
         }
 
         if (token) {
-         
-          dispatch(fetchUserById(decoded.id));
-          dispatch(setUser(jwtDecode<DecodedToken>(token)));
+                
+         await dispatch(fetchUserById(decoded.id));
+       await   dispatch(setUser(jwtDecode<DecodedToken>(token)));
            // Update Redux store
-           dispatch(getAddress())
-           dispatch(fetchProducts())
-          dispatch(getUserOrder(decoded.id))
+         await  dispatch(getAddress())
+        await   dispatch(fetchProducts())
+        await  dispatch(getUserOrder(decoded.id))
        
 
         }

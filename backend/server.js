@@ -1,40 +1,38 @@
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
-import connectDB from "./config/db.js"; 
+import connectDB from "./config/db.js";
 import cors from "cors";
 import router from "./config/router.js";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import "./passportsetup.js";
 
-
-
 const app = express();
 
-// ✅ CORS setup (must include credentials)
+// ✅ Middleware Setup
 app.use(
   cors({
-    origin: "https://ecommerce-a2i2.vercel.app", // Allow frontend requests
-    credentials: true, // Required if using cookies or authentication headers
-     // Ensure correct methods are allowed
-     // Include necessary headers
+    origin: ["https://ecommerce-a2i2.vercel.app", "http://localhost:3001"],
+    credentials: true,
   })
 );
-
-// ✅ Handle OPTIONS preflight requests explicitly
-
-
-
-app.use(express.json()); // Parse JSON requests
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data
-
-app.use(cookieParser()); // ✅ Place BEFORE `router` to ensure cookies are parsed
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(passport.initialize());
+app.use(router);
 
-app.use(router); // ✅ Move router setup AFTER cookieParser
-
+// ✅ Connect to MongoDB
 connectDB();
 
+// ✅ Fallback Route (For Unhandled API Requests)
+app.use("*", (req, res) => {
+  res.status(404).json({ error: "API route not found" });
+});
+
+// ✅ Start Server
 const port = process.env.PORT || 4000;
-app.listen(port, () => console.log(`Server connected on port ${port}`));
+app.listen(port, () => {
+  console.log(`🚀 Server running on port ${port}`);
+});

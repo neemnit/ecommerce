@@ -34,7 +34,7 @@ router.post(
   productController.createProduct
 );
 router.get('/getProduct', productController.getProduct);
-
+router.delete('/products/:id',productController.deleteProduct)
 /**
  * 🔑 Authentication Routes (Google & JWT)
  */
