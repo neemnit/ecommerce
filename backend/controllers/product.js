@@ -15,8 +15,6 @@ const productController = {
   // ✅ Create Product
   createProduct: async (req, res) => {
     try {
-      
-
       // Extract fields
       const { name, description, category, price, discount, stockQuantity, brand } = req.body;
 
@@ -68,13 +66,18 @@ const productController = {
         discount,
         stockQuantity,
         brand,
-        tags, 
+        tags,
         variants,
         images: imageUrls,
       });
 
       await newProduct.save();
-return      res.status(201).json({ message: "Product created successfully", data: newProduct });
+
+      // Emit socket event to notify all connected clients
+      const io = req.app.get("io");  // Get the io instance from Express
+      if (io) io.emit("product_added", newProduct);
+
+      res.status(201).json({ message: "Product created successfully", data: newProduct });
     } catch (error) {
       console.error("❌ Error creating product:", error);
       res.status(500).json({ error: error.message });
@@ -94,15 +97,27 @@ return      res.status(201).json({ message: "Product created successfully", data
       res.status(500).json({ success: false, message: "Internal Server Error" });
     }
   },
-  deleteProduct:async(req,res)=>{
+
+  // ✅ Delete Product
+  deleteProduct: async (req, res) => {
     try {
-      const id=req.params.id
-    const data=  await Product.findByIdAndDelete(id)
-    return res.json(data)
+      const id = req.params.id;
+      const deletedProduct = await Product.findByIdAndDelete(id);
+
+      if (!deletedProduct) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+
+      // Emit socket event to notify all connected clients about product deletion
+      const io = req.app.get("io");  // Get the io instance from Express
+      if (io) io.emit("product_deleted", id);
+
+      res.json({ message: "Product deleted successfully", id });
     } catch (error) {
-      return res.json(error)
+      console.error("❌ Error deleting product:", error);
+      res.status(500).json({ error: error.message });
     }
-  }
+  },
 };
 
 export default productController;

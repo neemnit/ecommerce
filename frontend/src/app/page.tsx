@@ -1,13 +1,15 @@
 "use client";
 import Image from "next/image";
+import { BASE_URL } from "./config/axios";
 import { useAppDispatch, useAppSelector } from "./hook";
-import { fetchProducts } from "./features/products/productSlice";
-import { useEffect, useState } from "react"; // Add useState
+import { fetchProducts, addProduct } from "./features/products/productSlice";
+import { useEffect, useState } from "react";
 import { Product } from "./features/products/productSlice";
 import { useRouter } from "next/navigation";
 import { fetchUserById, setUser } from "./features/users/userSlice";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import {  io } from "socket.io-client"; // Import Socket type from socket.io-client
 
 // Define the expected structure of the decoded JWT
 export interface DecodedToken {
@@ -21,10 +23,11 @@ export default function Home() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { loading, products, error, searchQuery } = useAppSelector((state) => state.products);
-  const [isClient, setIsClient] = useState(false); // Track client-side readiness
+  const [isClient, setIsClient] = useState(false);
+  
 
   useEffect(() => {
-    setIsClient(true); // Set to true after mounting on the client
+    setIsClient(true);
   }, []);
 
   useEffect(() => {
@@ -32,7 +35,7 @@ export default function Home() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!isClient) return; // Skip if not on the client
+    if (!isClient) return;
 
     const checkAuth = async () => {
       let token: string | null = localStorage.getItem("accessToken");
@@ -48,6 +51,7 @@ export default function Home() {
           localStorage.setItem("accessToken", res.data.accessToken);
           token = res.data.accessToken;
         }
+
         if (token) {
           dispatch(fetchUserById(decoded.id));
           dispatch(setUser(jwtDecode<DecodedToken>(token)));
@@ -59,7 +63,24 @@ export default function Home() {
     };
 
     checkAuth();
-  }, [isClient]); // Run only on the client
+  }, [isClient, dispatch]);
+
+  // Set up Socket.io connection
+  useEffect(() => {
+    const socketConnection = io(BASE_URL);
+
+    socketConnection.on("product_added", (newProduct: Product) => {
+      dispatch(addProduct(newProduct));
+    });
+
+    socketConnection.on("product_deleted", () => {
+      dispatch(fetchProducts());
+    });
+
+    return () => {
+      socketConnection.disconnect();
+    };
+  }, [dispatch]);
 
   const filteredProducts = products.filter((product: Product) =>
     searchQuery ? product.name.toLowerCase().includes(searchQuery.toLowerCase()) : true
@@ -71,17 +92,14 @@ export default function Home() {
         Featured Products
       </h1>
 
-      {/* Loading Spinner */}
       {loading && (
         <div className="flex justify-center items-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       )}
 
-      {/* Error Message */}
       {error && <p className="text-center text-lg text-red-400">{error}</p>}
 
-      {/* Product Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product: Product) => (
