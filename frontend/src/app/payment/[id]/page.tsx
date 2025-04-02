@@ -120,7 +120,7 @@ const PaymentPage = () => {
 
         {/* Smooth Transition for Order Details */}
         <div
-          className={`mt-2 bg-gray-200 rounded-lg p-2 transition-all duration-300 overflow-hidden ${
+          className={`mt-2 bg-gray-200 rounded-lg p-2 text-gray-800 transition-all duration-300 overflow-hidden ${
             showDetails ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
@@ -133,7 +133,7 @@ const PaymentPage = () => {
 
         {/* Payment Method Selection */}
         <select
-          className="w-full mt-4 p-2 border rounded-lg placeholder:text-gray-600"
+          className="w-full mt-4 p-2 border rounded-lg text-gray-800"
           value={paymentMethod}
           onChange={(e) => setPaymentMethod(e.target.value)}
         >

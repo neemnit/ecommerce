@@ -55,9 +55,7 @@ io.on("connection", (socket) => {
 app.set("io", io);
 
 // ✅ Fallback Route (For Unhandled API Requests)
-app.use("*", (req, res) => {
-  res.status(404).json({ error: "API route not found" });
-});
+
 
 // ✅ Start Server
 const port = process.env.PORT || 4000;

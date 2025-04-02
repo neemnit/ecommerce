@@ -22,10 +22,9 @@ const id =useAppSelector((state) => state.user.user?._id )
 
   useEffect(() => {
     const fetchData = async () => {
-      if (session_id && paymentId) {
-        dispatch(verifyPayment({ session_id, paymentId }));
-        if (id) {
-alert(id)          
+      if (session_id && paymentId) {  
+      await  dispatch(verifyPayment({ session_id, paymentId }));
+        if (id) {       
            await dispatch(getUserOrder(id));
           
         }

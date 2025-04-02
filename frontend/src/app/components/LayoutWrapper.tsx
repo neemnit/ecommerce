@@ -18,7 +18,8 @@ export default function LayoutWrapper({ children }: { children: ReactNode }) {
   const privateRoutes = ["/address", "/my-orders", "/order", "/payment", "/success"]; // Add your private routes
 
   useEffect(() => {
-    if (!isAuthenticated && privateRoutes.includes(pathname)) {
+    const token=localStorage.getItem("accessToken")
+    if ( !token && privateRoutes.includes(pathname)) {
       router.push("/"); // Redirect to login if not authenticated
     }
   }, [isAuthenticated, pathname, router, privateRoutes]);
